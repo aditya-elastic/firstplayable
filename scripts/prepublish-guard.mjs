@@ -12,7 +12,7 @@ process.stderr.write(
     "Run the full local gate first:",
     "  npm run check",
     "",
-    "When you intentionally decide to publish the single v0.1.0 build, rerun with:",
+    "When you intentionally decide to publish the single v0.1.1 build, rerun with:",
     "  FIRSTPLAYABLE_ALLOW_PUBLISH=1 npm publish --access public",
     ""
   ].join("\n")
