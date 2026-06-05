@@ -29,7 +29,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
-    "prepare": "npm run build",
+    "prepack": "npm run build",
     "test": "npm run build && node --test test/*.test.mjs",
     "acceptance:init": "npm run build && node --test test/firstplayable.test.mjs",
     "acceptance:skill-pack": "node test/release-audit.mjs --skill-only",
@@ -40,11 +40,11 @@
     "prepublishOnly": "node scripts/prepublish-guard.mjs"
   },
   "dependencies": {
-    "esbuild": "^0.27.7",
     "pdf-parse": "2.4.5",
     "zod": "^3.24.1"
   },
   "devDependencies": {
-    "@types/node": "^20.17.10"
+    "@types/node": "^20.17.10",
+    "esbuild": "^0.27.7"
   }
 }
