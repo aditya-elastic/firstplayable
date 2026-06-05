@@ -592,10 +592,23 @@ function normalizeText(value) {
 }
 async function extractPdfText(bytes) {
   try {
-    const imported = await import("pdf-parse");
-    const parse = imported.default ?? imported;
-    const result = await parse(bytes);
-    if (typeof result?.text === "string" && result.text.trim()) return result.text;
+    const { getDocument, VerbosityLevel } = await import("pdfjs-dist/legacy/build/pdf.mjs");
+    const data = new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const loadingTask = getDocument({
+      data,
+      disableWorker: true,
+      useSystemFonts: true,
+      verbosity: VerbosityLevel.ERRORS
+    });
+    const pdf = await loadingTask.promise;
+    const pages = [];
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const content = await page.getTextContent();
+      pages.push(content.items.map((item) => "str" in item ? item.str : "").join(" "));
+    }
+    const text = pages.join("\n").trim();
+    if (text) return text;
   } catch {
   }
   return bytes.toString("utf8").replace(/\)\s*Tj\s*[\d.-]+\s+[\d.-]+\s+Td\s*\(/g, "\n").replace(/BT\s+\/F\d+\s+\d+\s+Tf\s+[\d.-]+\s+[\d.-]+\s+Td\s*\(/g, "\n").replace(/\)\s*Tj\s*ET/g, "\n").replace(/\\n/g, "\n").replace(/\\r/g, "\n").replace(/\\t/g, " ").replace(/endstream[\s\S]*$/i, "").replace(/%PDF-[\s\S]*?stream/i, "").replace(/[^ -~\n]/g, " ").replace(/[ \t]+/g, " ").replace(/\n{2,}/g, "\n");

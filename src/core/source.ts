@@ -48,13 +48,28 @@ export function normalizeText(value: string): string {
 
 async function extractPdfText(bytes: Buffer): Promise<string> {
   try {
-    const imported = await import("pdf-parse");
-    const parse = imported.default ?? imported;
-    const result = await parse(bytes);
-    if (typeof result?.text === "string" && result.text.trim()) return result.text;
+    const { getDocument, VerbosityLevel } = await import("pdfjs-dist/legacy/build/pdf.mjs");
+    const data = new Uint8Array(bytes.buffer, bytes.byteOffset, bytes.byteLength);
+    const loadingTask = getDocument({
+      data,
+      disableWorker: true,
+      useSystemFonts: true,
+      verbosity: VerbosityLevel.ERRORS
+    });
+    const pdf = await loadingTask.promise;
+    const pages: string[] = [];
+
+    for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber += 1) {
+      const page = await pdf.getPage(pageNumber);
+      const content = await page.getTextContent();
+      pages.push(content.items.map((item) => ("str" in item ? item.str : "")).join(" "));
+    }
+
+    const text = pages.join("\n").trim();
+    if (text) return text;
   } catch {
     // Fall through to a lightweight text recovery path. This keeps local intake useful
-    // for simple PDF fixtures and malformed creator uploads while real PDFs use pdf-parse.
+    // for simple PDF fixtures and malformed creator uploads.
   }
 
   return bytes
