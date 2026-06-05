@@ -9,11 +9,13 @@ const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"))
 assert.equal(pkg.name, "firstplayable");
 assert.equal(pkg.version, "0.1.0");
 assert.equal(pkg.bin?.firstplayable, "dist/cli.js");
-assert.deepEqual(pkg.files, ["dist/", "scripts/prepare-git.mjs", "skills/firstplayable/SKILL.md", "skills/firstplayable/agents/openai.yaml", "README.md", "LICENSE"]);
+assert.deepEqual(pkg.files, ["dist/", "scripts/postinstall.mjs", "scripts/prepare-git.mjs", "skills/firstplayable/SKILL.md", "skills/firstplayable/agents/openai.yaml", "README.md", "LICENSE"]);
 assert.equal(pkg.scripts?.prepare, "node scripts/prepare-git.mjs");
 assert.equal(pkg.scripts?.prepack, "npm run build");
+assert.equal(pkg.scripts?.postinstall, "node scripts/postinstall.mjs");
 assert.equal(fs.existsSync(path.join(root, "skills", "firstplayable", "SKILL.md")), true);
 assert.equal(fs.existsSync(path.join(root, "skills", "firstplayable", "agents", "openai.yaml")), true);
+assert.equal(fs.existsSync(path.join(root, "scripts", "postinstall.mjs")), true);
 assert.equal(fs.existsSync(path.join(root, "scripts", "prepare-git.mjs")), true);
 
 const shippedSkillFiles = listFiles(path.join(root, "skills")).filter((file) => file.endsWith("SKILL.md"));

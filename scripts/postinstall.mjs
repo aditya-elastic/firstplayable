@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+import fs from "node:fs";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
+
+if (process.env.FIRSTPLAYABLE_SKIP_SETUP === "1") process.exit(0);
+
+const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const cli = path.join(packageRoot, "dist", "cli.js");
+if (!fs.existsSync(cli)) process.exit(0);
+
+const result = spawnSync(process.execPath, [cli, "setup", "--quiet"], {
+  cwd: packageRoot,
+  encoding: "utf8",
+  stdio: ["ignore", "pipe", "pipe"]
+});
+
+if (result.status === 0) {
+  process.stdout.write("FirstPlayable is ready. Start a new AI chat and say: Use FirstPlayable.\n");
+} else {
+  process.stdout.write("FirstPlayable installed. Run `firstplayable doctor` if your AI tool does not show it yet.\n");
+}
