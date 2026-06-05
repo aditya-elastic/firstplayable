@@ -7,7 +7,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"));
 
 assert.equal(pkg.name, "firstplayable");
-assert.equal(pkg.version, "0.1.0");
+assert.equal(pkg.version, "0.1.1");
 assert.equal(pkg.bin?.firstplayable, "dist/cli.js");
 assert.deepEqual(pkg.files, ["dist/", "scripts/postinstall.mjs", "scripts/prepare-git.mjs", "skills/firstplayable/SKILL.md", "skills/firstplayable/agents/openai.yaml", "README.md", "LICENSE"]);
 assert.deepEqual(pkg.dependencies ?? {}, {});

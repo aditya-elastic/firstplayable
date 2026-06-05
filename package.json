@@ -1,6 +1,6 @@
 {
   "name": "firstplayable",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "Platform-independent master skill and CLI for generating first playable project brains.",
   "type": "module",

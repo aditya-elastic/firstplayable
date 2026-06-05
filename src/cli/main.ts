@@ -13,7 +13,7 @@ type Parsed = {
   positionals: string[];
 };
 
-const VERSION = "0.1.0";
+const VERSION = "0.1.1";
 
 export async function runCli(argv: string[]): Promise<void> {
   const parsed = parseArgv(argv);
@@ -74,7 +74,7 @@ async function doctor(): Promise<Record<string, unknown>> {
 
 async function setup(parsed: Parsed): Promise<void> {
   const packageRoot = findPackageRoot();
-  const installed = await installTargets(setupTargets(parsed), packageRoot);
+  const installed = await installTargets(setupTargets(parsed), packageRoot, firstFlag(parsed, "cwd"));
   print(
     {
       ok: true,
@@ -137,7 +137,7 @@ async function installSkill(parsed: Parsed): Promise<void> {
   if (!targets.length) throw new Error("Usage: firstplayable skills install --codex|--cursor|--claude");
   const packageRoot = findPackageRoot();
   const installed = [];
-  for (const target of targets) installed.push(await installMasterSkill(target, packageRoot));
+  for (const target of targets) installed.push(await installMasterSkill(target, packageRoot, { cwd: firstFlag(parsed, "cwd") }));
   print({ ok: true, installed }, hasFlag(parsed, "json"));
 }
 
@@ -203,9 +203,9 @@ function defaultSkillTargets(): SkillTarget[] {
   return targets;
 }
 
-async function installTargets(targets: SkillTarget[], packageRoot: string): Promise<Array<{ target: SkillTarget; installedPath: string }>> {
+async function installTargets(targets: SkillTarget[], packageRoot: string, cwd?: string): Promise<Awaited<ReturnType<typeof installMasterSkill>>[]> {
   const installed = [];
-  for (const target of targets) installed.push(await installMasterSkill(target, packageRoot));
+  for (const target of targets) installed.push(await installMasterSkill(target, packageRoot, { cwd }));
   return installed;
 }
 
@@ -231,7 +231,7 @@ FirstPlayable
 
 Usage:
   firstplayable doctor [--json]
-  firstplayable setup [--codex] [--cursor] [--claude]
+  firstplayable setup [--codex] [--cursor] [--claude] [--cwd <project>]
   firstplayable init <dir> --idea "..."
   firstplayable init <dir> --source ./gameplay.pdf
   firstplayable intake --cwd <dir>

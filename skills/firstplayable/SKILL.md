@@ -15,6 +15,8 @@ If the source already explains the game well enough, do not ask sequential quest
 
 Ask only when a missing field materially blocks first-playable work or when the source contradicts itself. When asking, ask one compact grouped clarification, not a long wizard.
 
+The goal is not a tidy checklist. The goal is a playable slice that a new player can understand in one minute, with visible taste, responsive game feel, honest target execution, and evidence-backed QA.
+
 ## Intake Sources
 
 Use all available source text:
@@ -60,6 +62,7 @@ When complete:
 - generate project-local agents
 - generate memory and checklists
 - create target execution guidance from the selected target
+- enforce quality gates before implementation and before readiness claims
 
 When partial:
 
@@ -77,7 +80,12 @@ Generate helper skills locally:
 
 - `generated-skills/master-handoff.md`
 - `generated-skills/target-builder.md`
+- `generated-skills/target-specific-builder.md`
 - `generated-skills/taste-director.md`
+- `generated-skills/playable-quality-director.md`
+- `generated-skills/game-feel-director.md`
+- `generated-skills/one-minute-demo-auditor.md`
+- `generated-skills/implementation-architecture-director.md`
 - `generated-skills/qa-playtester.md`
 - `generated-skills/memory-manager.md`
 - `generated-skills/product-truth.md`
@@ -102,6 +110,18 @@ Generate helpers locally:
 
 Generate target-specific helpers only after the selected target is inferred or provided by the source.
 
+Generate `quality-gates.md` locally and make every helper honor it:
+
+- one-minute clarity
+- playable quality
+- taste fidelity
+- game feel
+- implementation architecture fit
+- target execution proof
+- evidence and honest verdict
+
+Do not accept dull grey-box, primitive, unreadable, or mechanically incomplete output as successful when the source asks for a specific playable taste. Structured output is useful only when it produces a better first playable.
+
 ## Source Of Truth
 
 Every generated helper skill and agent must reference:
@@ -109,6 +129,21 @@ Every generated helper skill and agent must reference:
 - `source-summary.md`
 - `extracted-spec.json`
 - `master-script.md`
+- `quality-gates.md`
+
+## Quality Gate Behavior
+
+Before implementing target files, read or generate the local helper skills. Use them as working roles:
+
+- `taste-director` protects visual ambition, silhouette readability, screenshot quality, camera, HUD, and mood.
+- `playable-quality-director` rejects static scene mockups and requires visible goal, agency, feedback, win/fail, and retry.
+- `game-feel-director` turns controls, movement, timing, camera, and primary actions into concrete tuning requirements.
+- `one-minute-demo-auditor` asks whether a fresh player understands the goal, controls, reward, danger, and retry path within 60 seconds.
+- `implementation-architecture-director` prevents hard-to-tune monolithic output when modular target-local code is needed.
+- `qa-playtester` records evidence, screenshots/logs/play notes, and blockers before any readiness verdict.
+- `product-truth` blocks inflated claims and also blocks calling dull or unclear output successful.
+
+If a later target-specific helper mentions Unity, Godot, web, or another surface, that mention must come from the user's selected or inferred target and remain inside the project-local `.firstplayable/` files.
 
 ## CLI Use
 
@@ -125,4 +160,4 @@ firstplayable snapshot --cwd <dir>
 
 ## Honesty Boundary
 
-Do not claim commercial readiness, store readiness, publishing readiness, or platform compliance unless later project-local evidence proves those claims. FirstPlayable v0.1.0 creates first-playable orchestration, not finished games.
+Do not claim commercial readiness, store readiness, publishing readiness, or platform compliance unless later project-local evidence proves those claims. FirstPlayable v0.1.1 creates first-playable orchestration and project-local quality helpers, not finished games.

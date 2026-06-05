@@ -23,6 +23,12 @@ If your AI tool does not show FirstPlayable yet, run:
 firstplayable setup
 ```
 
+For Cursor project rules:
+
+```bash
+firstplayable setup --cursor --cwd /path/to/your/project
+```
+
 ## Create A Project Brain
 
 ```bash
@@ -43,6 +49,7 @@ my-game/
     master-script.md
     taste-profile.md
     first-playable-contract.md
+    quality-gates.md
     target-plan.md
     memory.md
     generated-skills/
@@ -55,4 +62,6 @@ my-game/
 
 ## Boundary
 
-FirstPlayable v0.1.0 is an orchestrator and project-brain generator. It does not claim engine automation, commercial readiness, store readiness, or publishing readiness.
+FirstPlayable v0.1.1 is an orchestrator and project-brain generator. It does not claim engine automation, commercial readiness, store readiness, or publishing readiness.
+
+The generated helpers are meant to raise the quality bar before target work starts: one-minute clarity, playable quality, taste fidelity, game feel, architecture fit, and evidence-backed QA.
