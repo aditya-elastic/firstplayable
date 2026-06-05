@@ -65,6 +65,16 @@ test("setup installs codex skill with UI metadata", () => {
   assert.equal(fs.existsSync(path.join(codexHome, "skills", "firstplayable", "agents", "openai.yaml")), true);
 });
 
+test("doctor refreshes installed skill metadata", () => {
+  const home = tempDir("fp-home-");
+  const codexHome = path.join(home, ".codex");
+  const result = run(["doctor", "--json"], { HOME: home, CODEX_HOME: codexHome });
+  assert.equal(result.ok, true);
+  assert.equal(fs.existsSync(path.join(codexHome, "skills", "firstplayable", "SKILL.md")), true);
+  assert.equal(fs.existsSync(path.join(codexHome, "skills", "firstplayable", "agents", "openai.yaml")), true);
+  assert.equal(fs.existsSync(path.join(home, ".cursor", "rules", "firstplayable.mdc")), true);
+});
+
 function run(args, env = {}) {
   return JSON.parse(execFileSync(process.execPath, [cli, ...args], { cwd: root, env: { ...process.env, ...env }, encoding: "utf8" }));
 }

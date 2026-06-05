@@ -664,20 +664,20 @@ function parseArgv(argv) {
   return { command, flags, positionals };
 }
 async function doctor() {
+  const installed = await installTargets(defaultSkillTargets(), findPackageRoot());
   return {
     ok: true,
     product: "FirstPlayable",
     version: VERSION,
     node: process.version,
     ready: true,
+    installed,
     next: "Start a new chat and say: Use FirstPlayable."
   };
 }
 async function setup(parsed) {
   const packageRoot = findPackageRoot();
-  const requestedTargets = setupTargets(parsed);
-  const installed = [];
-  for (const target of requestedTargets) installed.push(await installMasterSkill(target, packageRoot));
+  const installed = await installTargets(setupTargets(parsed), packageRoot);
   print(
     {
       ok: true,
@@ -787,12 +787,18 @@ function setupTargets(parsed) {
   if (hasFlag(parsed, "codex")) targets.add("codex");
   if (hasFlag(parsed, "cursor")) targets.add("cursor");
   if (hasFlag(parsed, "claude")) targets.add("claude");
-  if (targets.size === 0) {
-    targets.add("codex");
-    targets.add("cursor");
-    if (fs4.existsSync(path4.join(process.env.HOME || "", ".claude"))) targets.add("claude");
-  }
+  if (targets.size === 0) return defaultSkillTargets();
   return [...targets];
+}
+function defaultSkillTargets() {
+  const targets = ["codex", "cursor"];
+  if (fs4.existsSync(path4.join(process.env.HOME || "", ".claude"))) targets.push("claude");
+  return targets;
+}
+async function installTargets(targets, packageRoot) {
+  const installed = [];
+  for (const target of targets) installed.push(await installMasterSkill(target, packageRoot));
+  return installed;
 }
 function commandArity(command) {
   if (command.length === 0) return 1;

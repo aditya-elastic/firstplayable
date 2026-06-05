@@ -9,7 +9,6 @@
   },
   "files": [
     "dist/",
-    "scripts/postinstall.mjs",
     "scripts/prepare-git.mjs",
     "skills/firstplayable/SKILL.md",
     "skills/firstplayable/agents/openai.yaml",
@@ -38,7 +37,6 @@
     "release:audit": "npm run build && node test/release-audit.mjs",
     "package:dry-run": "npm pack --dry-run",
     "check": "npm test && npm run release:audit && npm run package:dry-run",
-    "postinstall": "node scripts/postinstall.mjs",
     "prepublishOnly": "node scripts/prepublish-guard.mjs"
   },
   "dependencies": {
