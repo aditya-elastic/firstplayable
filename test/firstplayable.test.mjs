@@ -57,8 +57,16 @@ test("check validates generated project brain", () => {
   assert.deepEqual(result.missing, []);
 });
 
-function run(args) {
-  return JSON.parse(execFileSync(process.execPath, [cli, ...args], { cwd: root, encoding: "utf8" }));
+test("setup installs codex skill with UI metadata", () => {
+  const codexHome = tempDir("fp-codex-home-");
+  const result = run(["setup", "--codex", "--json"], { CODEX_HOME: codexHome });
+  assert.equal(result.ok, true);
+  assert.equal(fs.existsSync(path.join(codexHome, "skills", "firstplayable", "SKILL.md")), true);
+  assert.equal(fs.existsSync(path.join(codexHome, "skills", "firstplayable", "agents", "openai.yaml")), true);
+});
+
+function run(args, env = {}) {
+  return JSON.parse(execFileSync(process.execPath, [cli, ...args], { cwd: root, env: { ...process.env, ...env }, encoding: "utf8" }));
 }
 
 function readJson(file) {

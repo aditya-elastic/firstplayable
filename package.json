@@ -9,7 +9,9 @@
   },
   "files": [
     "dist/",
+    "scripts/postinstall.mjs",
     "skills/firstplayable/SKILL.md",
+    "skills/firstplayable/agents/openai.yaml",
     "README.md",
     "LICENSE"
   ],
@@ -27,12 +29,14 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "prepare": "npm run build",
     "test": "npm run build && node --test test/*.test.mjs",
     "acceptance:init": "npm run build && node --test test/firstplayable.test.mjs",
     "acceptance:skill-pack": "node test/release-audit.mjs --skill-only",
     "release:audit": "npm run build && node test/release-audit.mjs",
     "package:dry-run": "npm pack --dry-run",
     "check": "npm test && npm run release:audit && npm run package:dry-run",
+    "postinstall": "node scripts/postinstall.mjs",
     "prepublishOnly": "node scripts/prepublish-guard.mjs"
   },
   "dependencies": {

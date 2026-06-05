@@ -9,7 +9,18 @@ It ships one master skill. It does not ship platform adapters or permanent helpe
 ```bash
 npm install -g firstplayable
 firstplayable doctor
-firstplayable skills install --codex
+```
+
+After install, start a new AI chat and say:
+
+```text
+Use FirstPlayable. Here is my game idea...
+```
+
+If your AI tool does not show FirstPlayable yet, run:
+
+```bash
+firstplayable setup
 ```
 
 ## Create A Project Brain

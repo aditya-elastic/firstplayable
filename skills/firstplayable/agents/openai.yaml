@@ -1,0 +1,8 @@
+interface:
+  display_name: "FirstPlayable"
+  short_description: "Game idea to first-playable project brain"
+  brand_color: "#2563EB"
+  default_prompt: "Use $firstplayable to turn my game idea or gameplay document into a first-playable project brain."
+
+policy:
+  allow_implicit_invocation: true

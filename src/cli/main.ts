@@ -28,6 +28,7 @@ export async function runCli(argv: string[]): Promise<void> {
 
   const [command, subcommand] = parsed.command;
   if (command === "doctor") return print(await doctor(), hasFlag(parsed, "json"));
+  if (command === "setup") return setup(parsed);
   if (command === "init") return initProject(parsed);
   if (command === "intake") return intakeProject(parsed);
   if (command === "snapshot") return snapshotProject(parsed);
@@ -64,12 +65,24 @@ async function doctor(): Promise<Record<string, unknown>> {
     product: "FirstPlayable",
     version: VERSION,
     node: process.version,
-    platformIndependent: true,
-    shippedSkills: ["firstplayable"],
-    shippedAdapters: [],
-    pdfIntake: true,
-    projectLocalHelpers: true
+    ready: true,
+    next: "Start a new chat and say: Use FirstPlayable."
   };
+}
+
+async function setup(parsed: Parsed): Promise<void> {
+  const packageRoot = findPackageRoot();
+  const requestedTargets = setupTargets(parsed);
+  const installed = [];
+  for (const target of requestedTargets) installed.push(await installMasterSkill(target, packageRoot));
+  print(
+    {
+      ok: true,
+      installed,
+      next: "Restart or open a new AI chat, then say: Use FirstPlayable."
+    },
+    hasFlag(parsed, "json") || hasFlag(parsed, "quiet")
+  );
 }
 
 async function initProject(parsed: Parsed): Promise<void> {
@@ -143,7 +156,11 @@ function print(payload: Record<string, unknown>, json: boolean): void {
     return;
   }
   if ("product" in payload) {
-    console.log([`FirstPlayable ${payload.version}`, `Node: ${payload.node}`, "Platform adapters shipped: none", "Master skill: firstplayable", "PDF intake: available"].join("\n"));
+    console.log([`FirstPlayable ${payload.version}`, "Ready.", `Next: ${payload.next}`].join("\n"));
+    return;
+  }
+  if ("installed" in payload) {
+    console.log(["FirstPlayable setup complete.", `Next: ${payload.next}`].join("\n"));
     return;
   }
   if ("projectRoot" in payload) {
@@ -171,6 +188,19 @@ function hasFlag(parsed: Parsed, name: string): boolean {
   return parsed.flags.has(name);
 }
 
+function setupTargets(parsed: Parsed): SkillTarget[] {
+  const targets = new Set<SkillTarget>();
+  if (hasFlag(parsed, "codex")) targets.add("codex");
+  if (hasFlag(parsed, "cursor")) targets.add("cursor");
+  if (hasFlag(parsed, "claude")) targets.add("claude");
+  if (targets.size === 0) {
+    targets.add("codex");
+    targets.add("cursor");
+    if (fs.existsSync(path.join(process.env.HOME || "", ".claude"))) targets.add("claude");
+  }
+  return [...targets];
+}
+
 function commandArity(command: string[]): number {
   if (command.length === 0) return 1;
   if (command[0] === "skills") return 2;
@@ -193,6 +223,7 @@ FirstPlayable
 
 Usage:
   firstplayable doctor [--json]
+  firstplayable setup [--codex] [--cursor] [--claude]
   firstplayable init <dir> --idea "..."
   firstplayable init <dir> --source ./gameplay.pdf
   firstplayable intake --cwd <dir>
@@ -201,7 +232,7 @@ Usage:
   firstplayable skills install --codex|--cursor|--claude
   firstplayable --version
 
-FirstPlayable ships one platform-independent master skill. Target-specific helper skills, agents, QA, memory, and execution files are generated inside each project only after intake.
+FirstPlayable installs one master skill. Target-specific helper skills, agents, QA, memory, and execution files are generated inside each project only after intake.
 `.trim();
 }
 

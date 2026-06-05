@@ -9,8 +9,10 @@ const pkg = JSON.parse(fs.readFileSync(path.join(root, "package.json"), "utf8"))
 assert.equal(pkg.name, "firstplayable");
 assert.equal(pkg.version, "0.1.0");
 assert.equal(pkg.bin?.firstplayable, "dist/cli.js");
-assert.deepEqual(pkg.files, ["dist/", "skills/firstplayable/SKILL.md", "README.md", "LICENSE"]);
+assert.deepEqual(pkg.files, ["dist/", "scripts/postinstall.mjs", "skills/firstplayable/SKILL.md", "skills/firstplayable/agents/openai.yaml", "README.md", "LICENSE"]);
 assert.equal(fs.existsSync(path.join(root, "skills", "firstplayable", "SKILL.md")), true);
+assert.equal(fs.existsSync(path.join(root, "skills", "firstplayable", "agents", "openai.yaml")), true);
+assert.equal(fs.existsSync(path.join(root, "scripts", "postinstall.mjs")), true);
 
 const shippedSkillFiles = listFiles(path.join(root, "skills")).filter((file) => file.endsWith("SKILL.md"));
 assert.deepEqual(shippedSkillFiles.map((file) => path.relative(path.join(root, "skills"), file)), [path.join("firstplayable", "SKILL.md")]);
@@ -24,6 +26,7 @@ for (const file of publicTextFiles) {
 if (!process.argv.includes("--skill-only")) {
   const help = execFileSync(process.execPath, [path.join(root, "dist", "cli.js"), "--help"], { cwd: root, encoding: "utf8" });
   assert.match(help, /firstplayable init/);
+  assert.match(help, /firstplayable setup/);
   assert.doesNotMatch(help, /unity|godot|web adapter|steam adapter|youtube adapter/i);
 }
 
