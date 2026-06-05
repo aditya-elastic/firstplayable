@@ -1,0 +1,46 @@
+{
+  "name": "firstplayable",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Platform-independent master skill and CLI for generating first playable project brains.",
+  "type": "module",
+  "bin": {
+    "firstplayable": "dist/cli.js"
+  },
+  "files": [
+    "dist/",
+    "skills/firstplayable/SKILL.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aditya-elastic/firstplayable.git"
+  },
+  "homepage": "https://github.com/aditya-elastic/firstplayable#readme",
+  "bugs": {
+    "url": "https://github.com/aditya-elastic/firstplayable/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "npm run build && node --test test/*.test.mjs",
+    "acceptance:init": "npm run build && node --test test/firstplayable.test.mjs",
+    "acceptance:skill-pack": "node test/release-audit.mjs --skill-only",
+    "release:audit": "npm run build && node test/release-audit.mjs",
+    "package:dry-run": "npm pack --dry-run",
+    "check": "npm test && npm run release:audit && npm run package:dry-run",
+    "prepublishOnly": "node scripts/prepublish-guard.mjs"
+  },
+  "dependencies": {
+    "pdf-parse": "2.4.5",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20.17.10",
+    "esbuild": "^0.27.7"
+  }
+}

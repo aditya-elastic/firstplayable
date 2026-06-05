@@ -1,0 +1,48 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 1750 >>
+stream
+BT /F1 10 Tf 36 740 Td
+(Title: Neon Blade Arena) Tj
+0 -14 Td (Genre: top-down sword survival action) Tj
+0 -14 Td (Target: local playable prototype toolchain selected by the user) Tj
+0 -14 Td (Player fantasy: the player is a fast duelist cutting through glowing enemies.) Tj
+0 -14 Td (Core loop: dodge pressure, slash enemies, collect energy, survive the timer, retry.) Tj
+0 -14 Td (Controls: WASD movement, mouse aim, left click slash, space dash, R reset.) Tj
+0 -14 Td (Camera: top-down follow camera with readable arena framing.) Tj
+0 -14 Td (Mechanics: slash arc, dash cooldown, enemy waves, pickups, health, score streaks.) Tj
+0 -14 Td (Progression: one arena with thirty second pressure ramp and wave pacing.) Tj
+0 -14 Td (Assets: premium neon dark arcade style, sharp silhouettes, glowing feedback.) Tj
+0 -14 Td (UI: health, timer, score, dash cooldown, wave count, retry prompt.) Tj
+0 -14 Td (Win: survive the timer and clear the final wave. Fail: health reaches zero.) Tj
+0 -14 Td (First playable: one arena, player, two enemy types, pickup, win, fail, retry.) Tj
+0 -14 Td (QA: movement, slash hit, dash, enemy damage, pickup, win, fail, reset.) Tj
+0 -14 Td (Constraints: no menus, store publishing, accounts, multiplayer, monetization.) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f
+0000000009 00000 n
+0000000058 00000 n
+0000000115 00000 n
+0000000254 00000 n
+0000002056 00000 n
+trailer
+<< /Root 1 0 R /Size 6 >>
+startxref
+2125
+%%EOF
