@@ -10,6 +10,7 @@
   "files": [
     "dist/",
     "scripts/postinstall.mjs",
+    "scripts/prepare-git.mjs",
     "skills/firstplayable/SKILL.md",
     "skills/firstplayable/agents/openai.yaml",
     "README.md",
@@ -29,6 +30,7 @@
   },
   "scripts": {
     "build": "node scripts/build.mjs",
+    "prepare": "node scripts/prepare-git.mjs",
     "prepack": "npm run build",
     "test": "npm run build && node --test test/*.test.mjs",
     "acceptance:init": "npm run build && node --test test/firstplayable.test.mjs",

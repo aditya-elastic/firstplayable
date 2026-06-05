@@ -2,14 +2,16 @@
 import fs from "node:fs";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
+import { fileURLToPath } from "node:url";
 
 if (process.env.FIRSTPLAYABLE_SKIP_SETUP === "1") process.exit(0);
 
-const cli = path.join(process.cwd(), "dist", "cli.js");
+const packageRoot = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
+const cli = path.join(packageRoot, "dist", "cli.js");
 if (!fs.existsSync(cli)) process.exit(0);
 
 const result = spawnSync(process.execPath, [cli, "setup", "--quiet"], {
-  cwd: process.cwd(),
+  cwd: packageRoot,
   encoding: "utf8",
   stdio: ["ignore", "pipe", "pipe"]
 });
